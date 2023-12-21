@@ -1,5 +1,101 @@
 import SwiftUI
 
+/**
+    A container that presents rows of data arranged in a single column, similar to `List`, but with the option to create custom styles.
+
+    Create lists dynamically from an underlying collection of data. The following example shows how to create a simple list from an array of an Ocean type which conforms to Identifiable:
+ ```swift
+    struct Ocean: Identifiable {
+        let name: String
+        let id = UUID()
+    }
+
+    private var oceans = [
+        Ocean(name: "Pacific"),
+        Ocean(name: "Atlantic"),
+        Ocean(name: "Indian"),
+        Ocean(name: "Southern"),
+        Ocean(name: "Arctic")
+    ]
+
+    var body: some View {
+        CSList(oceans) {
+            Text($0.name)
+        }
+    }
+ ```
+
+    **Creating a custom style**
+ ```swift
+    // Create a custom style by defining a struct that conforms to CSListStyle protocol
+    struct MyCustomStyle: CSListStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 4) {
+                    // The provided header in CSList init
+                    // If no header was provided this will be an emptyview
+                    configuration.header
+                        .font(.headline)
+                        .padding(.leading)
+                    VStack(spacing: 8) {
+                        // loop over the input data defined in CSList init
+                        ForEach(configuration.data) { item in
+                            // the label defined in CSList init
+                            configuration.label(for: item)
+
+                            // Divider between items
+                            if item.id != configuration.data.last?.id {
+                                Divider()
+                            }
+                        }
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(.green)
+                            .opacity(0.8)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .strokeBorder(.foreground, lineWidth: 2)
+                    )
+                    // The provided footer in CSList init
+                    // If no header was provided this will be an emptyview
+                    configuration.footer
+                        .font(.caption)
+                        .padding(.leading)
+                }
+            }
+        }
+    }
+ ```
+    **Using the custom style**
+ ```swift
+    var body: some View {
+        CSList(oceans) {
+            Text($0.name)
+        }
+        .csListStyle(MyCustomStyle()) // This will affect all child views
+    }
+ ```
+
+    **Dot notation**
+ ```swift
+    extension CSListStyle where Self == MyCustomStyle {
+        static var `myCustomStyle`: Self { MyCustomStyle() }
+    }
+
+    // Now use like so
+    var body: some View {
+        CSList(oceans) {
+            Text($0.name)
+        }
+        .csListStyle(.myCustomStyle)
+    }
+ ```
+
+    - Author: Daniel Capra
+ */
 public struct CSList<Data, RowContent, Header, Footer> {
     @Environment(\.csListStyle) private var style
 
@@ -16,8 +112,36 @@ extension CSList: View {
 
 extension CSList where Data : RandomAccessCollection, Data.Element : Identifiable, RowContent : View, Header : View, Footer : View {
 
-    // TODO: Add Documentation
     // No Header or Footer
+    /**
+     Creates a list that computes its rows on demand from an underlying collection of identifiable data, without a header or footer.
+
+     - Parameters:
+        - data: A RandomAccessCollection of Identifiable Elements
+        - rowContent: A ViewBuilder closure that builds each element's row content
+
+     ```swift
+    struct Person: Identifiable {
+        let name: String
+        let id = UUID()
+    }
+
+    let persons: [Person] = [
+        Person(name: "Rachel"),
+        Person(name: "Mike"),
+        Person(name: "Harvey"),
+        Person(name: "Donna")
+    ]
+
+    var body: some View {
+        CSList(persons) {
+            Text($0.name)
+        }
+    }
+     ```
+
+     - Author: Daniel Capra
+     */
     @MainActor public init(
         _ data: Data,
         @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent
@@ -36,6 +160,39 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
     }
 
     // Only Header
+    /**
+     Creates a list that computes its rows on demand from an underlying collection of identifiable data, with a header, but no footer.
+
+     - Parameters:
+        - data: A RandomAccessCollection of Identifiable Elements
+        - rowContent: A ViewBuilder closure that builds each element's row content
+        - header: A ViewBuilder closure that builds the header view
+
+     ```swift
+    struct Person: Identifiable {
+        let name: String
+        let id = UUID()
+    }
+
+    let persons: [Person] = [
+        Person(name: "Rachel"),
+        Person(name: "Mike"),
+        Person(name: "Harvey"),
+        Person(name: "Donna")
+    ]
+
+    var body: some View {
+        CSList(persons) {
+            Text($0.name)
+        } header: {
+            Text("Suits characters")
+                .font(.headline)
+        }
+    }
+     ```
+
+     - Author: Daniel Capra
+     */
     @MainActor public init(
         _ data: Data,
         @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent,
@@ -55,6 +212,39 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
     }
 
     // Only Footer
+    /**
+     Creates a list that computes its rows on demand from an underlying collection of identifiable data, with a footer, but no header.
+
+     - Parameters:
+        - data: A RandomAccessCollection of Identifiable Elements
+        - rowContent: A ViewBuilder closure that builds each element's row content
+        - footer: A ViewBuilder closure that builds the footer view
+
+     ```swift
+    struct Person: Identifiable {
+        let name: String
+        let id = UUID()
+    }
+
+    let persons: [Person] = [
+        Person(name: "Rachel"),
+        Person(name: "Mike"),
+        Person(name: "Harvey"),
+        Person(name: "Donna")
+    ]
+
+    var body: some View {
+        CSList(persons) {
+            Text($0.name)
+        } footer: {
+            Text("Suits is an American legal drama television series created and written by Aaron Korsh.")
+                .font(.caption)
+        }
+    }
+     ```
+
+     - Author: Daniel Capra
+     */
     @MainActor public init(
         _ data: Data,
         @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent,
@@ -74,6 +264,43 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
     }
 
     // Both Header & Footer
+    /**
+         Creates a list that computes its rows on demand from an underlying collection of identifiable data, with a header and a footer.
+
+         - Parameters:
+            - data: A RandomAccessCollection of Identifiable Elements
+            - rowContent: A ViewBuilder closure that builds each element's row content
+            - header: A ViewBuilder closure that builds the header view
+            - footer: A ViewBuilder closure that builds the footer view
+
+         ```swift
+        struct Person: Identifiable {
+            let name: String
+            let id = UUID()
+        }
+
+        let persons: [Person] = [
+            Person(name: "Rachel"),
+            Person(name: "Mike"),
+            Person(name: "Harvey"),
+            Person(name: "Donna")
+        ]
+
+        var body: some View {
+            CSList(persons) {
+                Text($0.name)
+            } header: {
+                Text("Suits characters")
+                    .font(.headline)
+            } footer: {
+                Text("Suits is an American legal drama television series created and written by Aaron Korsh.")
+                    .font(.caption)
+            }
+        }
+         ```
+
+         - Author: Daniel Capra
+         */
     @MainActor public init(
         _ data: Data,
         @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent,
@@ -96,8 +323,39 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
 
 extension CSList where Data : RandomAccessCollection, RowContent : View, Header: View, Footer : View {
 
-    // TODO: Add documentation
     // No Header or Footer
+    /**
+     Creates a list that identifies its rows based on a key path to the identifier of the underlying data, without a header or footer.
+
+     - Parameters:
+        - data: A RandomAccessCollection
+        - id: A key path to the identifier of the data
+        - rowContent: A ViewBuilder closure that builds each element's row content
+
+     ```swift
+     struct Album {
+         let artist: String
+         let songs: [String]
+     }
+
+     let album = Album(artist: "TAEYEON", songs: [
+         "To. X",
+         "Melt Away",
+         "Burn It Down",
+         "Nightmare",
+         "All For Nothing",
+         "Fabulous"
+     ])
+
+    var body: some View {
+        CSList(album.songs, id: \.self) {
+            Text($0)
+        }
+    }
+     ```
+
+     - Author: Daniel Capra
+     */
     @MainActor public init<ID>(
         _ data: Data,
         id: KeyPath<Data.Element, ID>,
@@ -117,6 +375,42 @@ extension CSList where Data : RandomAccessCollection, RowContent : View, Header:
     }
 
     // Only Header
+    /**
+     Creates a list that identifies its rows based on a key path to the identifier of the underlying data, with a header, but no footer.
+
+     - Parameters:
+        - data: A RandomAccessCollection
+        - id: A key path to the identifier of the data
+        - rowContent: A ViewBuilder closure that builds each element's row content
+        - header: A ViewBuilder closure that builds the header view
+
+     ```swift
+    struct Album {
+        let artist: String
+        let songs: [String]
+    }
+
+     let album = Album(artist: "TAEYEON", songs: [
+         "To. X",
+         "Melt Away",
+         "Burn It Down",
+         "Nightmare",
+         "All For Nothing",
+         "Fabulous"
+     ])
+
+    var body: some View {
+        CSList(album.songs, id: \.self) {
+            Text($0)
+        } header: {
+            Text(album.artist)
+                .font(.headline)
+        }
+    }
+     ```
+
+     - Author: Daniel Capra
+     */
     @MainActor public init<ID>(
         _ data: Data,
         id: KeyPath<Data.Element, ID>,
@@ -137,6 +431,42 @@ extension CSList where Data : RandomAccessCollection, RowContent : View, Header:
     }
 
     // Only Footer
+    /**
+     Creates a list that identifies its rows based on a key path to the identifier of the underlying data, with a footer, but no header.
+
+     - Parameters:
+        - data: A RandomAccessCollection
+        - id: A key path to the identifier of the data
+        - rowContent: A ViewBuilder closure that builds each element's row content
+        - footer: A ViewBuilder closure that builds the footer view
+
+     ```swift
+    struct Album {
+        let artist: String
+        let songs: [String]
+    }
+
+     let album = Album(artist: "TAEYEON", songs: [
+         "To. X",
+         "Melt Away",
+         "Burn It Down",
+         "Nightmare",
+         "All For Nothing",
+         "Fabulous"
+     ])
+
+    var body: some View {
+        CSList(album.songs, id: \.self) {
+            Text($0)
+        } footer: {
+            Text("Kim Tae-yeon, known mononymously as Taeyeon, is a South Korean singer. She debuted as a member of girl group Girls' Generation in August 2007, which went on to become one of the best-selling artists in South Korea and one of the most popular K-pop groups worldwide.")
+                .font(.caption)
+        }
+    }
+     ```
+
+     - Author: Daniel Capra
+     */
     @MainActor public init<ID>(
         _ data: Data,
         id: KeyPath<Data.Element, ID>,
@@ -157,6 +487,46 @@ extension CSList where Data : RandomAccessCollection, RowContent : View, Header:
     }
 
     // Both Header & Footer
+    /**
+     Creates a list that identifies its rows based on a key path to the identifier of the underlying data, with both a header and a footer.
+
+     - Parameters:
+        - data: A RandomAccessCollection
+        - id: A key path to the identifier of the data
+        - rowContent: A ViewBuilder closure that builds each element's row content
+        - header: A ViewBuilder closure that builds the header view
+        - footer: A ViewBuilder closure that builds the footer view
+
+     ```swift
+    struct Album {
+        let artist: String
+        let songs: [String]
+    }
+
+     let album = Album(artist: "TAEYEON", songs: [
+         "To. X",
+         "Melt Away",
+         "Burn It Down",
+         "Nightmare",
+         "All For Nothing",
+         "Fabulous"
+     ])
+
+    var body: some View {
+        CSList(album.songs, id: \.self) {
+            Text($0)
+        } header: {
+            Text(album.artist)
+                .font(.headline)
+        } footer: {
+            Text("Kim Tae-yeon, known mononymously as Taeyeon, is a South Korean singer. She debuted as a member of girl group Girls' Generation in August 2007, which went on to become one of the best-selling artists in South Korea and one of the most popular K-pop groups worldwide.")
+                .font(.caption)
+        }
+    }
+     ```
+
+     - Author: Daniel Capra
+     */
     @MainActor public init<ID>(
         _ data: Data,
         id: KeyPath<Data.Element, ID>,
@@ -181,8 +551,24 @@ extension CSList where Data : RandomAccessCollection, RowContent : View, Header:
 
 extension CSList where Data == Range<Int>, RowContent : View, Header : View, Footer : View {
 
-    // TODO: Add documentation
     // No Header or Footer
+    /**
+     Creates a list that identifies its views on demand over a constant range, with no header or footer.
+
+     - Parameters:
+        - data: A constant range of integers
+        - rowContent: A ViewBuilder closure that builds each row content
+
+     ```swift
+     var body: some View {
+         CSList(0..<3) { number in
+             Text(number, format: .number)
+         }
+     }
+     ```
+
+     - Author: Daniel Capra
+     */
     @MainActor public init(
         _ data: Data,
         @ViewBuilder rowContent: @escaping (Int) -> RowContent
@@ -201,6 +587,27 @@ extension CSList where Data == Range<Int>, RowContent : View, Header : View, Foo
     }
 
     // Only Header
+    /**
+     Creates a list that identifies its views on demand over a constant range, with a header, but no footer.
+
+     - Parameters:
+        - data: A constant range of integers
+        - rowContent: A ViewBuilder closure that builds each row content
+        - header: A ViewBuilder closure that builds the header view
+
+     ```swift
+     var body: some View {
+         CSList(0..<3) { number in
+             Text(number, format: .number)
+         } header: {
+             Text("Some numbers")
+                .font(.headline)
+         }
+     }
+     ```
+
+     - Author: Daniel Capra
+     */
     @MainActor public init(
         _ data: Data,
         @ViewBuilder rowContent: @escaping (Int) -> RowContent,
@@ -220,6 +627,27 @@ extension CSList where Data == Range<Int>, RowContent : View, Header : View, Foo
     }
 
     // Only Footer
+    /**
+     Creates a list that identifies its views on demand over a constant range, with a footer, but no header.
+
+     - Parameters:
+        - data: A constant range of integers
+        - rowContent: A ViewBuilder closure that builds each row content
+        - footer: A ViewBuilder closure that builds the footer view
+
+     ```swift
+     var body: some View {
+         CSList(0..<3) { number in
+             Text(number, format: .number)
+         } footer: {
+             Text("An integer is a whole number that can be positive, negative, or zero.")
+                .font(.caption)
+         }
+     }
+     ```
+
+     - Author: Daniel Capra
+     */
     @MainActor public init(
         _ data: Data,
         @ViewBuilder rowContent: @escaping (Int) -> RowContent,
@@ -239,6 +667,31 @@ extension CSList where Data == Range<Int>, RowContent : View, Header : View, Foo
     }
 
     // Both Header & Footer
+    /**
+     Creates a list that identifies its views on demand over a constant range, with both a header and a footer.
+
+     - Parameters:
+        - data: A constant range of integers
+        - rowContent: A ViewBuilder closure that builds each row content
+        - header: A ViewBuilder closure that builds the header view
+        - footer: A ViewBuilder closure that builds the footer view
+
+     ```swift
+     var body: some View {
+         CSList(0..<3) { number in
+             Text(number, format: .number)
+         } header: {
+             Text("Some numbers")
+                .font(.headline)
+         } footer: {
+             Text("An integer is a whole number that can be positive, negative, or zero.")
+                .font(.caption)
+         }
+     }
+     ```
+
+     - Author: Daniel Capra
+     */
     @MainActor public init(
         _ data: Data,
         @ViewBuilder rowContent: @escaping (Int) -> RowContent,

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,7 +11,7 @@
 		C80D2D132B239DC100227C28 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80D2D122B239DC100227C28 /* ContentView.swift */; };
 		C80D2D152B239DC200227C28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C80D2D142B239DC200227C28 /* Assets.xcassets */; };
 		C80D2D192B239DC200227C28 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C80D2D182B239DC200227C28 /* Preview Assets.xcassets */; };
-		C80D2D242B239F1D00227C28 /* CSList in Frameworks */ = {isa = PBXBuildFile; productRef = C80D2D232B239F1D00227C28 /* CSList */; };
+		C821DEC32B348B59001C5C23 /* CSList in Frameworks */ = {isa = PBXBuildFile; productRef = C821DEC22B348B59001C5C23 /* CSList */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,7 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C80D2D242B239F1D00227C28 /* CSList in Frameworks */,
+				C821DEC32B348B59001C5C23 /* CSList in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +88,7 @@
 			);
 			name = CSListDemo;
 			packageProductDependencies = (
-				C80D2D232B239F1D00227C28 /* CSList */,
+				C821DEC22B348B59001C5C23 /* CSList */,
 			);
 			productName = CSListDemo;
 			productReference = C80D2D0D2B239DC100227C28 /* CSListDemo.app */;
@@ -102,7 +102,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					C80D2D0C2B239DC100227C28 = {
 						CreatedOnToolsVersion = 15.0.1;
@@ -119,7 +119,7 @@
 			);
 			mainGroup = C80D2D042B239DC100227C28;
 			packageReferences = (
-				C80D2D222B239F1D00227C28 /* XCLocalSwiftPackageReference "../.." */,
+				C821DEC12B348B59001C5C23 /* XCRemoteSwiftPackageReference "CSList" */,
 			);
 			productRefGroup = C80D2D0E2B239DC100227C28 /* Products */;
 			projectDirPath = "";
@@ -189,6 +189,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -250,6 +251,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -277,6 +279,7 @@
 				CODE_SIGN_ENTITLEMENTS = CSListDemo/CSListDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CSListDemo/Preview Content\"";
 				DEVELOPMENT_TEAM = Z8S29NHXJ5;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -315,6 +318,7 @@
 				CODE_SIGN_ENTITLEMENTS = CSListDemo/CSListDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CSListDemo/Preview Content\"";
 				DEVELOPMENT_TEAM = Z8S29NHXJ5;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -368,16 +372,21 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		C80D2D222B239F1D00227C28 /* XCLocalSwiftPackageReference "../.." */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../..;
+/* Begin XCRemoteSwiftPackageReference section */
+		C821DEC12B348B59001C5C23 /* XCRemoteSwiftPackageReference "CSList" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielcapra/CSList";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C80D2D232B239F1D00227C28 /* CSList */ = {
+		C821DEC22B348B59001C5C23 /* CSList */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = C821DEC12B348B59001C5C23 /* XCRemoteSwiftPackageReference "CSList" */;
 			productName = CSList;
 		};
 /* End XCSwiftPackageProductDependency section */

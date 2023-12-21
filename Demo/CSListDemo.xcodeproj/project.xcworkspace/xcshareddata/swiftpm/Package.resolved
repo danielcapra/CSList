@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "cslist",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/danielcapra/CSList",
+      "state" : {
+        "branch" : "main",
+        "revision" : "e8ef3c5c5942188d1cdd3814d3ecad3dad5d6f56"
+      }
+    }
+  ],
+  "version" : 2
+}
