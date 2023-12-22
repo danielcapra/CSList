@@ -126,7 +126,7 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
         let id = UUID()
     }
 
-    let persons: [Person] = [
+    let people: [Person] = [
         Person(name: "Rachel"),
         Person(name: "Mike"),
         Person(name: "Harvey"),
@@ -134,7 +134,7 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
     ]
 
     var body: some View {
-        CSList(persons) {
+        CSList(people) {
             Text($0.name)
         }
     }
@@ -174,7 +174,7 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
         let id = UUID()
     }
 
-    let persons: [Person] = [
+    let people: [Person] = [
         Person(name: "Rachel"),
         Person(name: "Mike"),
         Person(name: "Harvey"),
@@ -182,7 +182,7 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
     ]
 
     var body: some View {
-        CSList(persons) {
+        CSList(people) {
             Text($0.name)
         } header: {
             Text("Suits characters")
@@ -226,7 +226,7 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
         let id = UUID()
     }
 
-    let persons: [Person] = [
+    let people: [Person] = [
         Person(name: "Rachel"),
         Person(name: "Mike"),
         Person(name: "Harvey"),
@@ -234,7 +234,7 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
     ]
 
     var body: some View {
-        CSList(persons) {
+        CSList(people) {
             Text($0.name)
         } footer: {
             Text("Suits is an American legal drama television series created and written by Aaron Korsh.")
@@ -279,7 +279,7 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
             let id = UUID()
         }
 
-        let persons: [Person] = [
+        let people: [Person] = [
             Person(name: "Rachel"),
             Person(name: "Mike"),
             Person(name: "Harvey"),
@@ -287,7 +287,7 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
         ]
 
         var body: some View {
-            CSList(persons) {
+            CSList(people) {
                 Text($0.name)
             } header: {
                 Text("Suits characters")
@@ -300,7 +300,7 @@ extension CSList where Data : RandomAccessCollection, Data.Element : Identifiabl
          ```
 
          - Author: Daniel Capra
-         */
+    */
     @MainActor public init(
         _ data: Data,
         @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent,
