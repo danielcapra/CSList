@@ -906,29 +906,3 @@ public extension EnvironmentValues {
         set { self[CSListStyleKey.self] = newValue }
     }
 }
-
-
-struct MyView: View {
-    let songs: [String] = [
-        "To. X",
-        "Melt Away",
-        "Burn It Down",
-        "Nightmare",
-        "All For Nothing",
-        "Fabulous"
-    ]
-
-    var body: some View {
-        VStack(alignment: .leading) {
-//            LabeledContent("TAEYEON", value: "To. X - The 5th Mini Album")
-//                ./*labeledContentStyle(MyCustomLabelStyle())*/
-            CSList(songs, id: \.self) { song in
-                Text(song)
-            }
-            .csListStyle(.default)
-            Text("Kim Tae-yeon, known mononymously as Taeyeon, is a South Korean singer. She debuted as a member of girl group Girls' Generation in August 2007, which went on to become one of the best-selling artists in South Korea and one of the most popular K-pop groups worldwide.")
-                .font(.footnote)
-        }
-        .padding()
-    }
-}
