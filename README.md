@@ -1,5 +1,14 @@
 # CSList
 
+![](https://img.shields.io/badge/Swift-5.9-orange.svg)
+![](https://img.shields.io/badge/License-MIT-lightgrey) 
+[![](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager)
+![](https://img.shields.io/badge/iOS-13%2B-blue)
+![](https://img.shields.io/badge/macOS-10.15%2B-blue)
+![](https://img.shields.io/badge/tvOS-13%2B-blue)
+![](https://img.shields.io/badge/watchOS-6%2B-blue)
+![](https://img.shields.io/badge/visionOS-1%2B-blue)
+
 **CSList** is a versatile component for SwiftUI that aims to help data-heavy apps in keeping their SwiftUI design system neat and native-like.
 It is by no means a replacement for SwiftUI's `List`, more a helper for when you have to display lots of data in multiple different lists across your app, all with different customisation. 
 
