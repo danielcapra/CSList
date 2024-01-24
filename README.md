@@ -55,6 +55,14 @@ If you're anything like me and have already built SwiftUI design systems with th
 
 So let's talk about what this changes. Well, when you only have 1 or 2 different lists in your app, there's really no need to bring in `CSList`. However, for those of you with a need to display lots of data across your apps, you can see how now instead of creating 20 components you only need to create 20 styles for the same component. Arguably it's a similar amount of work, but I believe it to be so much better for keeping a cohesive and easy to maintain SwiftUI design system. Considering you probably already have dozens of button and label styles, `CSListStyle`s will fit right in.
 
+# Installation
+
+## Swift Package Manager
+Add `https://github.com/danielcapra/CSList` to your project.
+
+## Manual
+Download and add [`CSList.swift`](./Sources/CSList/CSList.swift) to your project.
+
 # API
 
 ## Creating a custom style
